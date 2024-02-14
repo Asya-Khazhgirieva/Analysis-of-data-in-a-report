@@ -1,11 +1,10 @@
-Attribute VB_Name = "Module4"
 Option Explicit
 
 Sub Count_Colored_Cells()
     Dim GreenCount As Integer
     Dim OrangeCount As Integer
     Dim YellowCount As Integer
-    Dim RedCount As Integer ' Задаю переменную типа "целое число" для хранения количества красных ячеек
+    Dim RedCount As Integer ' Г‡Г Г¤Г Гѕ ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ ГІГЁГЇГ  "Г¶ГҐГ«Г®ГҐ Г·ГЁГ±Г«Г®" Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ  ГЄГ°Г Г±Г­Г»Гµ ГїГ·ГҐГҐГЄ
     Dim Sheet As Worksheet
     Dim lastRow As Long
     Dim lastRowFile As Integer
@@ -13,7 +12,7 @@ Sub Count_Colored_Cells()
     Dim ws As Worksheet
     Dim targetMonth As Integer
     Dim targetYear As Integer
-    ' Задаю строковую переменную для фильтра, которая будет флагом
+    ' Г‡Г Г¤Г Гѕ Г±ГІГ°Г®ГЄГ®ГўГіГѕ ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ Г¤Г«Гї ГґГЁГ«ГјГІГ°Г , ГЄГ®ГІГ®Г°Г Гї ГЎГіГ¤ГҐГІ ГґГ«Г ГЈГ®Г¬
     Dim WhatFilter As String
     Dim OtherWorkbook As Workbook
     Dim FGreenDoneRowCount As Integer
@@ -25,7 +24,7 @@ Sub Count_Colored_Cells()
     Dim FYellowDoneRowCount As Integer
     Dim FYellowInProgressCount As Integer
     Dim FYellowOverdueCount As Integer
-    ' Задаю целочисленные переменные для хранения кол-ва F-строк красного цвета
+    ' Г‡Г Г¤Г Гѕ Г¶ГҐГ«Г®Г·ГЁГ±Г«ГҐГ­Г­Г»ГҐ ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї ГЄГ®Г«-ГўГ  F-Г±ГІГ°Г®ГЄ ГЄГ°Г Г±Г­Г®ГЈГ® Г¶ГўГҐГІГ 
     Dim FRedDoneRowCount As Integer
     Dim FRedInProgressCount As Integer
     Dim FRedOverdueCount As Integer
@@ -45,24 +44,24 @@ Sub Count_Colored_Cells()
     Set UniqueDates = CreateObject("Scripting.Dictionary")
     Dim BValue As New Collection
     
-    ' Указываем лист, на котором указаны фильтры
+    ' Г“ГЄГ Г§Г»ГўГ ГҐГ¬ Г«ГЁГ±ГІ, Г­Г  ГЄГ®ГІГ®Г°Г®Г¬ ГіГЄГ Г§Г Г­Г» ГґГЁГ«ГјГІГ°Г»
     Set ws = ThisWorkbook.Sheets(1)
 
-    ' Проверяем какая из ячеек фильтра по датам заполнена
+    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГЄГ ГЄГ Гї ГЁГ§ ГїГ·ГҐГҐГЄ ГґГЁГ«ГјГІГ°Г  ГЇГ® Г¤Г ГІГ Г¬ Г§Г ГЇГ®Г«Г­ГҐГ­Г 
     If Not IsEmpty(Range("B2").Value) And IsEmpty(Range("C2").Value) And IsEmpty(Range("D2").Value) Then
-        ' Получаем месяц и год из ячейки фильтра
+        ' ГЏГ®Г«ГіГ·Г ГҐГ¬ Г¬ГҐГ±ГїГ¶ ГЁ ГЈГ®Г¤ ГЁГ§ ГїГ·ГҐГ©ГЄГЁ ГґГЁГ«ГјГІГ°Г 
         targetMonth = Month(ws.Range("B2").Value)
         targetYear = Year(ws.Range("B2").Value)
         WhatFilter = "B"
     ElseIf Not IsEmpty(Range("D2").Value) And IsEmpty(Range("C2").Value) And IsEmpty(Range("B2").Value) Then
-        ' Получаем год из ячейки фильтра
+        ' ГЏГ®Г«ГіГ·Г ГҐГ¬ ГЈГ®Г¤ ГЁГ§ ГїГ·ГҐГ©ГЄГЁ ГґГЁГ«ГјГІГ°Г 
         targetYear = Year(ws.Range("D2").Value)
         WhatFilter = "D"
     ElseIf Not IsEmpty(Range("C2").Value) And IsEmpty(Range("D2").Value) And IsEmpty(Range("B2").Value) Then
-        ' Сохраняю интервал дат из ячейки C2 в виде строки
+        ' Г‘Г®ГµГ°Г Г­ГїГѕ ГЁГ­ГІГҐГ°ГўГ Г« Г¤Г ГІ ГЁГ§ ГїГ·ГҐГ©ГЄГЁ C2 Гў ГўГЁГ¤ГҐ Г±ГІГ°Г®ГЄГЁ
         Dim interval As String
         interval = Range("C2").Value
-        ' Разбиваю строку с интервалом на 2 даты
+        ' ГђГ Г§ГЎГЁГўГ Гѕ Г±ГІГ°Г®ГЄГі Г± ГЁГ­ГІГҐГ°ГўГ Г«Г®Г¬ Г­Г  2 Г¤Г ГІГ»
         Dim dates() As String
         Dim OneDate As Date
         Dim TwoDate As Date
@@ -72,10 +71,10 @@ Sub Count_Colored_Cells()
         TwoDate = DateValue(Trim(dates(1)))
         WhatFilter = "C"
     Else
-        MsgBox "Неправильно задан фильтр по датам"
+        MsgBox "ГЌГҐГЇГ°Г ГўГЁГ«ГјГ­Г® Г§Г Г¤Г Г­ ГґГЁГ«ГјГІГ° ГЇГ® Г¤Г ГІГ Г¬"
     End If
 
-    ' Сбросить счетчики
+    ' Г‘ГЎГ°Г®Г±ГЁГІГј Г±Г·ГҐГІГ·ГЁГЄГЁ
     GreenCount = 0
     OrangeCount = 0
     YellowCount = 0
@@ -104,33 +103,33 @@ Sub Count_Colored_Cells()
     AverageYellow = 0
     AverageRed = 0
 
-    ' Считаем сколько книг указано
-    lastRowFile = ws.Cells(ws.Rows.Count, "E").End(xlUp).Row ' Последняя заполненная строка в столбце E
+    ' Г‘Г·ГЁГІГ ГҐГ¬ Г±ГЄГ®Г«ГјГЄГ® ГЄГ­ГЁГЈ ГіГЄГ Г§Г Г­Г®
+    lastRowFile = ws.Cells(ws.Rows.Count, "E").End(xlUp).Row ' ГЏГ®Г±Г«ГҐГ¤Г­ГїГї Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г Гї Г±ГІГ°Г®ГЄГ  Гў Г±ГІГ®Г«ГЎГ¶ГҐ E
 
     Dim j As Long
-    For j = 2 To lastRowFile ' Начиная со 2 строки и до последней заполненной строки
+    For j = 2 To lastRowFile ' ГЌГ Г·ГЁГ­Г Гї Г±Г® 2 Г±ГІГ°Г®ГЄГЁ ГЁ Г¤Г® ГЇГ®Г±Г«ГҐГ¤Г­ГҐГ© Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
 
-        ' Открываем книгу, с которой нужно считать данные
+        ' ГЋГІГЄГ°Г»ГўГ ГҐГ¬ ГЄГ­ГЁГЈГі, Г± ГЄГ®ГІГ®Г°Г®Г© Г­ГіГ¦Г­Г® Г±Г·ГЁГІГ ГІГј Г¤Г Г­Г­Г»ГҐ
         Set OtherWorkbook = Workbooks.Open(ws.Cells(j, "E").Value)
         Set Sheet = OtherWorkbook.Sheets(1)
         
         ' Determine the last filled cell in column E
-        lastRow = Sheet.Cells(Sheet.Rows.Count, "E").End(xlUp).Row ' Последняя заполненная строка в столбце E
+        lastRow = Sheet.Cells(Sheet.Rows.Count, "E").End(xlUp).Row ' ГЏГ®Г±Г«ГҐГ¤Г­ГїГї Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г Гї Г±ГІГ°Г®ГЄГ  Гў Г±ГІГ®Г«ГЎГ¶ГҐ E
         
-        ' Считаем количество цветных ячеек в столбце E, соответствующих указанной дате в столбце B
+        ' Г‘Г·ГЁГІГ ГҐГ¬ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г¶ГўГҐГІГ­Г»Гµ ГїГ·ГҐГҐГЄ Гў Г±ГІГ®Г«ГЎГ¶ГҐ E, Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГµ ГіГЄГ Г§Г Г­Г­Г®Г© Г¤Г ГІГҐ Гў Г±ГІГ®Г«ГЎГ¶ГҐ B
         Dim i As Long
-        For i = 4 To lastRow ' Начиная с 4 строки и до последней заполненной строки
-            ' Проверяем, что ячейка B содержит дату и не является пустой
+        For i = 4 To lastRow ' ГЌГ Г·ГЁГ­Г Гї Г± 4 Г±ГІГ°Г®ГЄГЁ ГЁ Г¤Г® ГЇГ®Г±Г«ГҐГ¤Г­ГҐГ© Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
+            ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® ГїГ·ГҐГ©ГЄГ  B Г±Г®Г¤ГҐГ°Г¦ГЁГІ Г¤Г ГІГі ГЁ Г­ГҐ ГїГўГ«ГїГҐГІГ±Гї ГЇГіГ±ГІГ®Г©
             If IsDate(Sheet.Cells(i, "B").Value) Then
-                ' Проверяем выбран ли фильтр по месяцу и году
+                ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® Г¬ГҐГ±ГїГ¶Гі ГЁ ГЈГ®Г¤Гі
                 If WhatFilter = "B" Then
                     If Month(Sheet.Cells(i, "B").Value) = targetMonth And Year(Sheet.Cells(i, "B").Value) = targetYear Then
-                        'если нашли нужную дату смотрим какой цвет
+                        'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                         If Sheet.Cells(i, "E").MergeCells Then
-                            'MsgBox "Эта ячейка объединена."
+                            'MsgBox "ГќГІГ  ГїГ·ГҐГ©ГЄГ  Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г ."
                             
                             Dim mergedRange As Range
-                            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' Получаем объединенный диапазон
+                            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' ГЏГ®Г«ГіГ·Г ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»Г© Г¤ГЁГ ГЇГ Г§Г®Г­
                         
                             ' Check cell color
                             Select Case Sheet.Cells(i, "E").Interior.Color
@@ -144,10 +143,10 @@ Sub Count_Colored_Cells()
                                     RedCount = RedCount + 1
                             End Select
                                 
-                            ' Пропускаем объединенные строки
+                            ' ГЏГ°Г®ГЇГіГ±ГЄГ ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»ГҐ Г±ГІГ°Г®ГЄГЁ
                             i = i + mergedRange.Cells.Count - 1
                         Else
-                            'MsgBox "Эта ячейка не объединена."
+                            'MsgBox "ГќГІГ  ГїГ·ГҐГ©ГЄГ  Г­ГҐ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г ."
                             ' Check cell color
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
@@ -161,14 +160,14 @@ Sub Count_Colored_Cells()
                             End Select
                         End If
                     End If
-                ' Проверяем выбран ли фильтр по году
+                ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЈГ®Г¤Гі
                 ElseIf WhatFilter = "D" Then
                     If Year(Sheet.Cells(i, "B").Value) = targetYear Then
-                        'если нашли нужную дату смотрим какой цвет
+                        'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                         If Sheet.Cells(i, "E").MergeCells Then
-                            'MsgBox "Эта ячейка объединена."
+                            'MsgBox "ГќГІГ  ГїГ·ГҐГ©ГЄГ  Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г ."
                             
-                            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' Получаем объединенный диапазон
+                            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' ГЏГ®Г«ГіГ·Г ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»Г© Г¤ГЁГ ГЇГ Г§Г®Г­
                         
                             ' Check cell color
                             Select Case Sheet.Cells(i, "E").Interior.Color
@@ -182,10 +181,10 @@ Sub Count_Colored_Cells()
                                     RedCount = RedCount + 1
                             End Select
                                 
-                            ' Пропускаем объединенные строки
+                            ' ГЏГ°Г®ГЇГіГ±ГЄГ ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»ГҐ Г±ГІГ°Г®ГЄГЁ
                             i = i + mergedRange.Cells.Count - 1
                         Else
-                            'MsgBox "Эта ячейка не объединена."
+                            'MsgBox "ГќГІГ  ГїГ·ГҐГ©ГЄГ  Г­ГҐ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г ."
                             ' Check cell color
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
@@ -199,15 +198,15 @@ Sub Count_Colored_Cells()
                             End Select
                         End If
                     End If
-                ' Проверяем выбран ли фильтр по периоду
+                ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЇГҐГ°ГЁГ®Г¤Гі
                 ElseIf WhatFilter = "C" Then
-                    ' Проверяем что дата в столбце B попадает в наш период
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ Г·ГІГ® Г¤Г ГІГ  Гў Г±ГІГ®Г«ГЎГ¶ГҐ B ГЇГ®ГЇГ Г¤Г ГҐГІ Гў Г­Г Гё ГЇГҐГ°ГЁГ®Г¤
                     If Sheet.Cells(i, "B").Value >= OneDate And Sheet.Cells(i, "B").Value <= TwoDate Then
-                        'если нашли нужную дату смотрим какой цвет
+                        'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                         If Sheet.Cells(i, "E").MergeCells Then
-                            'MsgBox "Эта ячейка объединена."
+                            'MsgBox "ГќГІГ  ГїГ·ГҐГ©ГЄГ  Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г ."
                             
-                            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' Получаем объединенный диапазон
+                            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' ГЏГ®Г«ГіГ·Г ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»Г© Г¤ГЁГ ГЇГ Г§Г®Г­
                         
                             ' Check cell color
                             Select Case Sheet.Cells(i, "E").Interior.Color
@@ -221,10 +220,10 @@ Sub Count_Colored_Cells()
                                     RedCount = RedCount + 1
                             End Select
                                 
-                            ' Пропускаем объединенные строки
+                            ' ГЏГ°Г®ГЇГіГ±ГЄГ ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»ГҐ Г±ГІГ°Г®ГЄГЁ
                             i = i + mergedRange.Cells.Count - 1
                         Else
-                            'MsgBox "Эта ячейка не объединена."
+                            'MsgBox "ГќГІГ  ГїГ·ГҐГ©ГЄГ  Г­ГҐ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г ."
                             ' Check cell color
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
@@ -242,22 +241,22 @@ Sub Count_Colored_Cells()
             End If
         Next i
         
-        ' Вызываем процедуру FCount для подсчета F строк по статусам и передаем ей аргументы
+        ' Г‚Г»Г§Г»ГўГ ГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі FCount Г¤Г«Гї ГЇГ®Г¤Г±Г·ГҐГІГ  F Г±ГІГ°Г®ГЄ ГЇГ® Г±ГІГ ГІГіГ±Г Г¬ ГЁ ГЇГҐГ°ГҐГ¤Г ГҐГ¬ ГҐГ© Г Г°ГЈГіГ¬ГҐГ­ГІГ»
         FCount Sheet, targetMonth, targetYear, WhatFilter, ws, lastRow, lastRowFile, OneDate, TwoDate, FGreenDoneRowCount, _
             FGreenInProgressCount, FGreenOverdueCount, FOrangeDoneRowCount, _
             FOrangeInProgressCount, FOrangeOverdueCount, FYellowDoneRowCount, _
             FYellowInProgressCount, FYellowOverdueCount, FRedDoneRowCount, _
             FRedInProgressCount, FRedOverdueCount
 
-        ' Вызываем процедуру MeanCountColorF для подсчета F строк и передаем ей аргументы
+        ' Г‚Г»Г§Г»ГўГ ГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі MeanCountColorF Г¤Г«Гї ГЇГ®Г¤Г±Г·ГҐГІГ  F Г±ГІГ°Г®ГЄ ГЁ ГЇГҐГ°ГҐГ¤Г ГҐГ¬ ГҐГ© Г Г°ГЈГіГ¬ГҐГ­ГІГ»
         MeanCountColorF Sheet, ws, lastRow, TotalGreenCount, TotalOrangeCount, TotalYellowCount, TotalRedCount, AverageGreen, _
                     AverageOrange, AverageYellow, AverageRed, FGreenRowCountList, FOrangeRowCountList, FYellowRowCountList, _
                     FRedRowCountList
 
-        ' Вызываем процедуру CountDatesB для подсчета уникальных дат и передаем ей аргументы
+        ' Г‚Г»Г§Г»ГўГ ГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі CountDatesB Г¤Г«Гї ГЇГ®Г¤Г±Г·ГҐГІГ  ГіГ­ГЁГЄГ Г«ГјГ­Г»Гµ Г¤Г ГІ ГЁ ГЇГҐГ°ГҐГ¤Г ГҐГ¬ ГҐГ© Г Г°ГЈГіГ¬ГҐГ­ГІГ»
         CountDatesB Sheet, ws, lastRow, UniqueDates, BValue, targetMonth, targetYear, WhatFilter, OneDate, TwoDate
 
-        OtherWorkbook.Close ' Закрываем книгу после использования
+        OtherWorkbook.Close ' Г‡Г ГЄГ°Г»ГўГ ГҐГ¬ ГЄГ­ГЁГЈГі ГЇГ®Г±Г«ГҐ ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ Г­ГЁГї
     Next j
 
     ws.Range("B3").Value = GreenCount
@@ -281,74 +280,74 @@ Sub Count_Colored_Cells()
     ws.Range("B17").Value = FRedInProgressCount
     ws.Range("B18").Value = FRedOverdueCount
     
-    ' Суммирование значений в коллекции
+    ' Г‘ГіГ¬Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г§Г­Г Г·ГҐГ­ГЁГ© Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ
     For i = 1 To FGreenRowCountList.Count
         TotalGreenCount = TotalGreenCount + FGreenRowCountList(i)
     Next i
 
-    ' Проверка наличия элементов в коллекции перед делением
+    ' ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г Г«ГЁГ·ГЁГї ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ ГЇГҐГ°ГҐГ¤ Г¤ГҐГ«ГҐГ­ГЁГҐГ¬
     If FGreenRowCountList.Count > 0 Then
-        ' Вычисление среднего арифметического
+        ' Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г±Г°ГҐГ¤Г­ГҐГЈГ® Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГЈГ®
         AverageGreen = TotalGreenCount / FGreenRowCountList.Count
     Else
-        MsgBox "Зеленая коллекция пуста, невозможно вычислить среднее арифметическое.", vbExclamation
+        MsgBox "Г‡ГҐГ«ГҐГ­Г Гї ГЄГ®Г«Г«ГҐГЄГ¶ГЁГї ГЇГіГ±ГІГ , Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г® ГўГ»Г·ГЁГ±Г«ГЁГІГј Г±Г°ГҐГ¤Г­ГҐГҐ Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГҐ.", vbExclamation
     End If
     
-    ' Суммирование значений в коллекции
+    ' Г‘ГіГ¬Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г§Г­Г Г·ГҐГ­ГЁГ© Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ
     For i = 1 To FOrangeRowCountList.Count
         TotalOrangeCount = TotalOrangeCount + FOrangeRowCountList(i)
     Next i
 
-    ' Проверка наличия элементов в коллекции перед делением
+    ' ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г Г«ГЁГ·ГЁГї ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ ГЇГҐГ°ГҐГ¤ Г¤ГҐГ«ГҐГ­ГЁГҐГ¬
     If FOrangeRowCountList.Count > 0 Then
-        ' Вычисление среднего арифметического
+        ' Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г±Г°ГҐГ¤Г­ГҐГЈГ® Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГЈГ®
         AverageOrange = TotalOrangeCount / FOrangeRowCountList.Count
     Else
-        MsgBox "Оранжевая Коллекция пуста, невозможно вычислить среднее арифметическое.", vbExclamation
+        MsgBox "ГЋГ°Г Г­Г¦ГҐГўГ Гї ГЉГ®Г«Г«ГҐГЄГ¶ГЁГї ГЇГіГ±ГІГ , Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г® ГўГ»Г·ГЁГ±Г«ГЁГІГј Г±Г°ГҐГ¤Г­ГҐГҐ Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГҐ.", vbExclamation
     End If
     
-    ' Суммирование значений в коллекции
+    ' Г‘ГіГ¬Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г§Г­Г Г·ГҐГ­ГЁГ© Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ
     For i = 1 To FYellowRowCountList.Count
         TotalYellowCount = TotalYellowCount + FYellowRowCountList(i)
     Next i
 
-    ' Проверка наличия элементов в коллекции перед делением
+    ' ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г Г«ГЁГ·ГЁГї ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ ГЇГҐГ°ГҐГ¤ Г¤ГҐГ«ГҐГ­ГЁГҐГ¬
     If FYellowRowCountList.Count > 0 Then
-        ' Вычисление среднего арифметического
+        ' Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г±Г°ГҐГ¤Г­ГҐГЈГ® Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГЈГ®
         AverageYellow = TotalYellowCount / FYellowRowCountList.Count
     Else
-        MsgBox "Желтая Коллекция пуста, невозможно вычислить среднее арифметическое.", vbExclamation
+        MsgBox "Г†ГҐГ«ГІГ Гї ГЉГ®Г«Г«ГҐГЄГ¶ГЁГї ГЇГіГ±ГІГ , Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г® ГўГ»Г·ГЁГ±Г«ГЁГІГј Г±Г°ГҐГ¤Г­ГҐГҐ Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГҐ.", vbExclamation
     End If
     
-    ' Суммирование значений в коллекции
+    ' Г‘ГіГ¬Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г§Г­Г Г·ГҐГ­ГЁГ© Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ
     For i = 1 To FRedRowCountList.Count
         TotalRedCount = TotalRedCount + FRedRowCountList(i)
     Next i
 
-    ' Проверка наличия элементов в коллекции перед делением
+    ' ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г Г«ГЁГ·ГЁГї ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў ГЄГ®Г«Г«ГҐГЄГ¶ГЁГЁ ГЇГҐГ°ГҐГ¤ Г¤ГҐГ«ГҐГ­ГЁГҐГ¬
     If FRedRowCountList.Count > 0 Then
-        ' Вычисление среднего арифметического
+        ' Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ Г±Г°ГҐГ¤Г­ГҐГЈГ® Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГЈГ®
         AverageRed = TotalRedCount / FRedRowCountList.Count
     Else
-        MsgBox "Красная Коллекция пуста, невозможно вычислить среднее арифметическое.", vbExclamation
+        MsgBox "ГЉГ°Г Г±Г­Г Гї ГЉГ®Г«Г«ГҐГЄГ¶ГЁГї ГЇГіГ±ГІГ , Г­ГҐГўГ®Г§Г¬Г®Г¦Г­Г® ГўГ»Г·ГЁГ±Г«ГЁГІГј Г±Г°ГҐГ¤Г­ГҐГҐ Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГ®ГҐ.", vbExclamation
     End If
 
-    ' Выводим общее количество зеленых мероприятий
+    ' Г‚Г»ГўГ®Г¤ГЁГ¬ Г®ГЎГ№ГҐГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г§ГҐГ«ГҐГ­Г»Гµ Г¬ГҐГ°Г®ГЇГ°ГЁГїГІГЁГ©
     ws.Range("B23").Value = TotalGreenCount
-    ' Выводим общее количество оранжевых мероприятий
+    ' Г‚Г»ГўГ®Г¤ГЁГ¬ Г®ГЎГ№ГҐГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г®Г°Г Г­Г¦ГҐГўГ»Гµ Г¬ГҐГ°Г®ГЇГ°ГЁГїГІГЁГ©
     ws.Range("B24").Value = TotalOrangeCount
-    ' Выводим общее количество желтых мероприятий
+    ' Г‚Г»ГўГ®Г¤ГЁГ¬ Г®ГЎГ№ГҐГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г¦ГҐГ«ГІГ»Гµ Г¬ГҐГ°Г®ГЇГ°ГЁГїГІГЁГ©
     ws.Range("B25").Value = TotalYellowCount
-    ' Выводим общее количество красных мероприятий
+    ' Г‚Г»ГўГ®Г¤ГЁГ¬ Г®ГЎГ№ГҐГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЄГ°Г Г±Г­Г»Гµ Г¬ГҐГ°Г®ГЇГ°ГЁГїГІГЁГ©
     ws.Range("B26").Value = TotalRedCount
 
-    ' Выводим среднее значение по количеству ячеек каждого цвета
+    ' Г‚Г»ГўГ®Г¤ГЁГ¬ Г±Г°ГҐГ¤Г­ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЇГ® ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГі ГїГ·ГҐГҐГЄ ГЄГ Г¦Г¤Г®ГЈГ® Г¶ГўГҐГІГ 
     ws.Range("B19").Value = AverageGreen
     ws.Range("B20").Value = AverageOrange
     ws.Range("B21").Value = AverageYellow
     ws.Range("B22").Value = AverageRed
 
-    ' Вывод количества уникальных дат
+    ' Г‚Г»ГўГ®Г¤ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ  ГіГ­ГЁГЄГ Г«ГјГ­Г»Гµ Г¤Г ГІ
     ws.Range("B27").Value = UniqueDates.Count
     
 End Sub
@@ -363,31 +362,31 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
     Dim Cell As Range
     Dim currentDate As Date
     
-    ' Задаем переменную для хранения количества строк в объединенной ячейке
+    ' Г‡Г Г¤Г ГҐГ¬ ГЇГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ  Г±ГІГ°Г®ГЄ Гў Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г®Г© ГїГ·ГҐГ©ГЄГҐ
     Dim mergedRange As Range
     
-    ' Проверяем является ли последняя ячейка объединенной
+    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГїГўГ«ГїГҐГІГ±Гї Г«ГЁ ГЇГ®Г±Г«ГҐГ¤Г­ГїГї ГїГ·ГҐГ©ГЄГ  Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г®Г©
     If Sheet.Cells(lastRow, "E").MergeCells Then
-        Set mergedRange = Sheet.Cells(lastRow, "E").MergeArea ' Получаем объединенный диапазон
-        lastRow = lastRow + mergedRange.Cells.Count - 1 ' Добавляем к номеру последней строки количество объединенных ячеек
+        Set mergedRange = Sheet.Cells(lastRow, "E").MergeArea ' ГЏГ®Г«ГіГ·Г ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»Г© Г¤ГЁГ ГЇГ Г§Г®Г­
+        lastRow = lastRow + mergedRange.Cells.Count - 1 ' Г„Г®ГЎГ ГўГ«ГїГҐГ¬ ГЄ Г­Г®Г¬ГҐГ°Гі ГЇГ®Г±Г«ГҐГ¤Г­ГҐГ© Г±ГІГ°Г®ГЄГЁ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»Гµ ГїГ·ГҐГҐГЄ
     End If
     
-    ' Получение текущей даты
+    ' ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ ГІГҐГЄГіГ№ГҐГ© Г¤Г ГІГ»
     currentDate = Date
-    ' Считаем количество цветных ячеек в столбце E, соответствующих указанной дате в столбце B
+    ' Г‘Г·ГЁГІГ ГҐГ¬ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г¶ГўГҐГІГ­Г»Гµ ГїГ·ГҐГҐГЄ Гў Г±ГІГ®Г«ГЎГ¶ГҐ E, Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГµ ГіГЄГ Г§Г Г­Г­Г®Г© Г¤Г ГІГҐ Гў Г±ГІГ®Г«ГЎГ¶ГҐ B
         Dim i As Long
-        For i = 4 To lastRow ' Начиная с 4 строки и до последней заполненной строки
-            ' Проверяем, что ячейка B содержит дату и не является пустой
+        For i = 4 To lastRow ' ГЌГ Г·ГЁГ­Г Гї Г± 4 Г±ГІГ°Г®ГЄГЁ ГЁ Г¤Г® ГЇГ®Г±Г«ГҐГ¤Г­ГҐГ© Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
+            ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® ГїГ·ГҐГ©ГЄГ  B Г±Г®Г¤ГҐГ°Г¦ГЁГІ Г¤Г ГІГі ГЁ Г­ГҐ ГїГўГ«ГїГҐГІГ±Гї ГЇГіГ±ГІГ®Г©
             If Sheet.Cells(i, "B").MergeCells Then
                 If IsDate(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) Then
-                    ' Проверяем выбран ли фильтр по месяцу и году
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® Г¬ГҐГ±ГїГ¶Гі ГЁ ГЈГ®Г¤Гі
                     If WhatFilter = "B" Then
                         If Month(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) = targetMonth And Year(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) = targetYear Then
-                            'если нашли нужную дату смотрим какой цвет
+                            'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FGreenDoneRowCount = FGreenDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FGreenInProgressCount = FGreenInProgressCount + 1
@@ -395,8 +394,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FGreenOverdueCount = FGreenOverdueCount + 1
                                     End If
                                 Case RGB(255, 192, 0) ' Orange color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FOrangeDoneRowCount = FOrangeDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FOrangeInProgressCount = FOrangeInProgressCount + 1
@@ -404,8 +403,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FOrangeOverdueCount = FOrangeOverdueCount + 1
                                     End If
                                 Case RGB(255, 255, 0) ' Yellow color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FYellowDoneRowCount = FYellowDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FYellowInProgressCount = FYellowInProgressCount + 1
@@ -413,8 +412,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FYellowOverdueCount = FYellowOverdueCount + 1
                                     End If
                                 Case RGB(255, 0, 0) ' Red color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FRedDoneRowCount = FRedDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FRedInProgressCount = FRedInProgressCount + 1
@@ -423,14 +422,14 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                     End If
                             End Select
                         End If
-                    ' Проверяем выбран ли фильтр по году
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЈГ®Г¤Гі
                     ElseIf WhatFilter = "D" Then
                         If Year(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) = targetYear Then
-                            'если нашли нужную дату смотрим какой цвет
+                            'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FGreenDoneRowCount = FGreenDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FGreenInProgressCount = FGreenInProgressCount + 1
@@ -438,8 +437,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FGreenOverdueCount = FGreenOverdueCount + 1
                                     End If
                                 Case RGB(255, 192, 0) ' Orange color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FOrangeDoneRowCount = FOrangeDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FOrangeInProgressCount = FOrangeInProgressCount + 1
@@ -447,8 +446,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FOrangeOverdueCount = FOrangeOverdueCount + 1
                                     End If
                                 Case RGB(255, 255, 0) ' Yellow color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FYellowDoneRowCount = FYellowDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FYellowInProgressCount = FYellowInProgressCount + 1
@@ -456,8 +455,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FYellowOverdueCount = FYellowOverdueCount + 1
                                     End If
                                 Case RGB(255, 0, 0) ' Red color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FRedDoneRowCount = FRedDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FRedInProgressCount = FRedInProgressCount + 1
@@ -466,15 +465,15 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                     End If
                             End Select
                         End If
-                    ' Проверяем выбран ли фильтр по периоду
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЇГҐГ°ГЁГ®Г¤Гі
                     ElseIf WhatFilter = "C" Then
-                        ' Проверяем что дата в столбце B попадает в наш период
+                        ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ Г·ГІГ® Г¤Г ГІГ  Гў Г±ГІГ®Г«ГЎГ¶ГҐ B ГЇГ®ГЇГ Г¤Г ГҐГІ Гў Г­Г Гё ГЇГҐГ°ГЁГ®Г¤
                         If Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value >= OneDate And Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value <= TwoDate Then
-                            'если нашли нужную дату смотрим какой цвет
+                            'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FGreenDoneRowCount = FGreenDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FGreenInProgressCount = FGreenInProgressCount + 1
@@ -482,8 +481,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FGreenOverdueCount = FGreenOverdueCount + 1
                                     End If
                                 Case RGB(255, 192, 0) ' Orange color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FOrangeDoneRowCount = FOrangeDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FOrangeInProgressCount = FOrangeInProgressCount + 1
@@ -491,8 +490,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FOrangeOverdueCount = FOrangeOverdueCount + 1
                                     End If
                                 Case RGB(255, 255, 0) ' Yellow color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FYellowDoneRowCount = FYellowDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FYellowInProgressCount = FYellowInProgressCount + 1
@@ -500,8 +499,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FYellowOverdueCount = FYellowOverdueCount + 1
                                     End If
                                 Case RGB(255, 0, 0) ' Red color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FRedDoneRowCount = FRedDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FRedInProgressCount = FRedInProgressCount + 1
@@ -514,14 +513,14 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                 End If
             Else
                 If IsDate(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) Then
-                    ' Проверяем выбран ли фильтр по месяцу и году
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® Г¬ГҐГ±ГїГ¶Гі ГЁ ГЈГ®Г¤Гі
                     If WhatFilter = "B" Then
                         If Month(Sheet.Cells(i, "B").Value) = targetMonth And Year(Sheet.Cells(i, "B").Value) = targetYear Then
-                            'если нашли нужную дату смотрим какой цвет
+                            'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FGreenDoneRowCount = FGreenDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FGreenInProgressCount = FGreenInProgressCount + 1
@@ -529,8 +528,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FGreenOverdueCount = FGreenOverdueCount + 1
                                     End If
                                 Case RGB(255, 192, 0) ' Orange color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FOrangeDoneRowCount = FOrangeDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FOrangeInProgressCount = FOrangeInProgressCount + 1
@@ -538,8 +537,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FOrangeOverdueCount = FOrangeOverdueCount + 1
                                     End If
                                 Case RGB(255, 255, 0) ' Yellow color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FYellowDoneRowCount = FYellowDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FYellowInProgressCount = FYellowInProgressCount + 1
@@ -547,8 +546,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FYellowOverdueCount = FYellowOverdueCount + 1
                                     End If
                                 Case RGB(255, 0, 0) ' Red color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FRedDoneRowCount = FRedDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FRedInProgressCount = FRedInProgressCount + 1
@@ -557,14 +556,14 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                     End If
                             End Select
                         End If
-                    ' Проверяем выбран ли фильтр по году
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЈГ®Г¤Гі
                     ElseIf WhatFilter = "D" Then
                         If Year(Sheet.Cells(i, "B").Value) = targetYear Then
-                            'если нашли нужную дату смотрим какой цвет
+                            'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FGreenDoneRowCount = FGreenDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FGreenInProgressCount = FGreenInProgressCount + 1
@@ -572,8 +571,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FGreenOverdueCount = FGreenOverdueCount + 1
                                     End If
                                 Case RGB(255, 192, 0) ' Orange color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FOrangeDoneRowCount = FOrangeDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FOrangeInProgressCount = FOrangeInProgressCount + 1
@@ -581,8 +580,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FOrangeOverdueCount = FOrangeOverdueCount + 1
                                     End If
                                 Case RGB(255, 255, 0) ' Yellow color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FYellowDoneRowCount = FYellowDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FYellowInProgressCount = FYellowInProgressCount + 1
@@ -590,8 +589,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FYellowOverdueCount = FYellowOverdueCount + 1
                                     End If
                                 Case RGB(255, 0, 0) ' Red color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FRedDoneRowCount = FRedDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FRedInProgressCount = FRedInProgressCount + 1
@@ -600,15 +599,15 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                     End If
                             End Select
                         End If
-                    ' Проверяем выбран ли фильтр по периоду
+                    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЇГҐГ°ГЁГ®Г¤Гі
                     ElseIf WhatFilter = "C" Then
-                        ' Проверяем что дата в столбце B попадает в наш период
+                        ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ Г·ГІГ® Г¤Г ГІГ  Гў Г±ГІГ®Г«ГЎГ¶ГҐ B ГЇГ®ГЇГ Г¤Г ГҐГІ Гў Г­Г Гё ГЇГҐГ°ГЁГ®Г¤
                         If Sheet.Cells(i, "B").Value >= OneDate And Sheet.Cells(i, "B").Value <= TwoDate Then
-                            'если нашли нужную дату смотрим какой цвет
+                            'ГҐГ±Г«ГЁ Г­Г ГёГ«ГЁ Г­ГіГ¦Г­ГіГѕ Г¤Г ГІГі Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
                             Select Case Sheet.Cells(i, "E").Interior.Color
                                 Case RGB(0, 176, 80) ' Green color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FGreenDoneRowCount = FGreenDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FGreenInProgressCount = FGreenInProgressCount + 1
@@ -616,8 +615,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FGreenOverdueCount = FGreenOverdueCount + 1
                                     End If
                                 Case RGB(255, 192, 0) ' Orange color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FOrangeDoneRowCount = FOrangeDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FOrangeInProgressCount = FOrangeInProgressCount + 1
@@ -625,8 +624,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FOrangeOverdueCount = FOrangeOverdueCount + 1
                                     End If
                                 Case RGB(255, 255, 0) ' Yellow color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FYellowDoneRowCount = FYellowDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FYellowInProgressCount = FYellowInProgressCount + 1
@@ -634,8 +633,8 @@ Sub FCount(Sheet As Worksheet, targetMonth As Integer, targetYear As Integer, Wh
                                         FYellowOverdueCount = FYellowOverdueCount + 1
                                     End If
                                 Case RGB(255, 0, 0) ' Red color
-                                    'Считаем строки по цветам и статусам в F
-                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Выполнено") Then
+                                    'Г‘Г·ГЁГІГ ГҐГ¬ Г±ГІГ°Г®ГЄГЁ ГЇГ® Г¶ГўГҐГІГ Г¬ ГЁ Г±ГІГ ГІГіГ±Г Г¬ Гў F
+                                    If UCase(Sheet.Cells(i, "I").Value) = UCase("Г‚Г»ГЇГ®Г«Г­ГҐГ­Г®") Then
                                         FRedDoneRowCount = FRedDoneRowCount + 1
                                     ElseIf IsDate(Sheet.Cells(i, "G").Value) And currentDate < Sheet.Cells(i, "G").Value Then
                                         FRedInProgressCount = FRedInProgressCount + 1
@@ -660,14 +659,14 @@ Sub MeanCountColorF(Sheet As Worksheet, ws As Worksheet, lastRow As Long, ByRef 
     Dim mergedRange As Range
     Dim k As Integer
     
-    ' Считаем количество цветных ячеек в столбце E, соответствующих указанной дате в столбце B
+    ' Г‘Г·ГЁГІГ ГҐГ¬ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г¶ГўГҐГІГ­Г»Гµ ГїГ·ГҐГҐГЄ Гў Г±ГІГ®Г«ГЎГ¶ГҐ E, Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГµ ГіГЄГ Г§Г Г­Г­Г®Г© Г¤Г ГІГҐ Гў Г±ГІГ®Г«ГЎГ¶ГҐ B
     Dim i As Long
-    For i = 4 To lastRow ' Начиная с 4 строки и до последней заполненной строки
-        ' Проверяем, что ячейка объединенная
+    For i = 4 To lastRow ' ГЌГ Г·ГЁГ­Г Гї Г± 4 Г±ГІГ°Г®ГЄГЁ ГЁ Г¤Г® ГЇГ®Г±Г«ГҐГ¤Г­ГҐГ© Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
+        ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® ГїГ·ГҐГ©ГЄГ  Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г Гї
         If Sheet.Cells(i, "E").MergeCells Then
-            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' Получаем объединенный диапазон
+            Set mergedRange = Sheet.Cells(i, "E").MergeArea ' ГЏГ®Г«ГіГ·Г ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»Г© Г¤ГЁГ ГЇГ Г§Г®Г­
             
-            ' смотрим какой цвет
+            ' Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
             Select Case Sheet.Cells(i, "E").Interior.Color
                 Case RGB(0, 176, 80) ' Green color
                     FGreenRowCountList.Add mergedRange.Cells.Count
@@ -679,10 +678,10 @@ Sub MeanCountColorF(Sheet As Worksheet, ws As Worksheet, lastRow As Long, ByRef 
                     FRedRowCountList.Add mergedRange.Cells.Count
             End Select
             
-            ' Пропускаем объединенные строки
+            ' ГЏГ°Г®ГЇГіГ±ГЄГ ГҐГ¬ Г®ГЎГєГҐГ¤ГЁГ­ГҐГ­Г­Г»ГҐ Г±ГІГ°Г®ГЄГЁ
             i = i + mergedRange.Cells.Count - 1
         Else
-            'смотрим какой цвет
+            'Г±Г¬Г®ГІГ°ГЁГ¬ ГЄГ ГЄГ®Г© Г¶ГўГҐГІ
             Select Case Sheet.Cells(i, "E").Interior.Color
                 Case RGB(0, 176, 80) ' Green color
                     FGreenRowCountList.Add 1
@@ -700,24 +699,24 @@ End Sub
 Sub CountDatesB(Sheet As Worksheet, ws As Worksheet, lastRow As Long, ByRef UniqueDates As Object, ByRef BValue As Collection, _
                 targetMonth As Integer, targetYear As Integer, WhatFilter As String, OneDate As Date, TwoDate As Date)
 
-    ' Запускаем цикл начиная с 4 строки и до последней заполненной строки
+    ' Г‡Г ГЇГіГ±ГЄГ ГҐГ¬ Г¶ГЁГЄГ« Г­Г Г·ГЁГ­Г Гї Г± 4 Г±ГІГ°Г®ГЄГЁ ГЁ Г¤Г® ГЇГ®Г±Г«ГҐГ¤Г­ГҐГ© Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г®Г© Г±ГІГ°Г®ГЄГЁ
     Dim i As Long
     For i = 4 To lastRow
-        ' Проверяем, что ячейка B содержит дату и не является пустой
+        ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® ГїГ·ГҐГ©ГЄГ  B Г±Г®Г¤ГҐГ°Г¦ГЁГІ Г¤Г ГІГі ГЁ Г­ГҐ ГїГўГ«ГїГҐГІГ±Гї ГЇГіГ±ГІГ®Г©
         If IsDate(Sheet.Cells(i, "B").Value) Then
-            ' Проверяем выбран ли фильтр по месяцу и году
+            ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® Г¬ГҐГ±ГїГ¶Гі ГЁ ГЈГ®Г¤Гі
             If WhatFilter = "B" Then
                 If Month(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) = targetMonth And Year(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) = targetYear Then
                     BValue.Add Sheet.Cells(i, "B").Value
                 End If
-            ' Проверяем выбран ли фильтр по году
+            ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЈГ®Г¤Гі
             ElseIf WhatFilter = "D" Then
                 If Year(Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value) = targetYear Then
                     BValue.Add Sheet.Cells(i, "B").Value
                 End If
-            ' Проверяем выбран ли фильтр по периоду
+            ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГўГ»ГЎГ°Г Г­ Г«ГЁ ГґГЁГ«ГјГІГ° ГЇГ® ГЇГҐГ°ГЁГ®Г¤Гі
             ElseIf WhatFilter = "C" Then
-                ' Проверяем что дата в столбце B попадает в наш период
+                ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ Г·ГІГ® Г¤Г ГІГ  Гў Г±ГІГ®Г«ГЎГ¶ГҐ B ГЇГ®ГЇГ Г¤Г ГҐГІ Гў Г­Г Гё ГЇГҐГ°ГЁГ®Г¤
                 If Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value >= OneDate And Sheet.Cells(i, "B").MergeArea.Cells(1, 1).Value <= TwoDate Then
                     BValue.Add Sheet.Cells(i, "B").Value
                 End If
@@ -725,7 +724,7 @@ Sub CountDatesB(Sheet As Worksheet, ws As Worksheet, lastRow As Long, ByRef Uniq
         End If
     Next i
 
-    ' Проверка уникальных дат
+    ' ГЏГ°Г®ГўГҐГ°ГЄГ  ГіГ­ГЁГЄГ Г«ГјГ­Г»Гµ Г¤Г ГІ
     For i = 1 To BValue.Count
         UniqueDates(CDate(BValue(i))) = 1
     Next i
